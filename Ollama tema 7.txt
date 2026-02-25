@@ -1,0 +1,108 @@
+CREATE TABLE empleados (
+...     id_empleado INT PRIMARY KEY,
+...     nombre VARCHAR(100),
+...     apellido VARCHAR(100),
+...     departamento VARCHAR(50),
+...     salario DECIMAL(10,2),
+...     fecha_contratacion DATE,
+...     ciudad VARCHAR(50)
+... );
+ Es una estructura de una tabla llamada "empleados" con los siguientes campos:
+
+* id\_empleado (entero positivo auto-incrementable y único por ser la llave primaria).
+* nombre (cadena que puede contener hasta 100 caracteres).
+* apellido (cadena que puede contener hasta 100 caracteres).
+* departamento (cadena que puede contener hasta 50 caracteres).
+* salario (decimal con dos cifras después del punto, que puede representar el sueldo de los
+empleados).
+* fecha\_contratacion (fecha que representa la fecha en que se contrató al empleado).
+* ciudad (cadena que puede contener hasta 50 caracteres y representa donde se encuentra el
+empleado).
+
+>>> >>> Tengo que escribir una query para:
+... "Obtener todos los empleados del departamento de Ventas"
+...
+... Antes de darme el SQL, explícame:
+... 1. ¿Qué columnas debería SELECT? ¿Todas o solo algunas?
+... 2. ¿Qué condición va en WHERE?
+... 3. ¿Necesito ORDER BY?
+ 1. En este caso, es posible que desees obtener todas las columnas para tener información
+completa sobre cada empleado del departamento de Ventas. Sin embargo, si deseas obtener solo
+ciertas columnas específicas (por ejemplo, nombre y apellido), puedes seleccionarlas
+individualmente en el SELECT:
+```sql
+SELECT nombre, apellido FROM empleados WHERE departamento = 'Ventas';
+```
+2. La condición que debemos agregar al WHERE será la del departamento de Ventas. Suponiendo que
+tienes una columna llamada "departamento" para identificar cada departamento, podrías hacer:
+`WHERE departamento = 'Ventas'`.
+3. No se necesita una ordenación por defecto si solo deseas obtener todos los empleados del
+departamento sin importar su orden. Sin embargo, si necesitas ordenarlos por alguna columna
+específica (por ejemplo, apellido o nombre), puedes agregar la siguiente línea ORDER BY a tu
+consulta: `ORDER BY apellido ASC` (donde ASC significa "orden ascendente").
+
+>>> >>> Mi query es:
+... SELECT * FROM empleados WHERE departamento = "Ventas";
+...
+... ¿Está correcta para el requisito: "todos los empleados de Ventas"?
+ Sí, la consulta que proporcionaste es correcta y cumple con el requisito "Obtener todos los
+empleados del departamento de Ventas". Si deseas obtener solo ciertas columnas específicas en
+lugar de todas, puedes seleccionarlas individualmente en el SELECT:
+```sql
+SELECT nombre, apellido FROM empleados WHERE departamento = "Ventas";
+```
+
+>>> >>> Requisito: "Empleados de Madrid o Barcelona que ganen más de 30.000€,
+... ordenados por salario descendente"
+...
+... Descomponme este requisito:
+... 1. ¿Cuántas condiciones hay?
+... 2. ¿Uso AND u OR entre condiciones?
+... 3. ¿Cómo se traduce "más de 30.000"?
+... 4. ¿"Descendente" es ASC o DESC?
+ 1. Hay cuatro condiciones en este requisito:
+* Departamento de Madrid o Barcelona
+* Salario mayor a 30.000€
+2. En este caso, se usa OR entre las dos condiciones del departamento (Madrid o Barcelona).
+3. "Más de 30.000" en el contexto del requisito indica que se buscan empleados con un salario
+superior a ese valor.
+4. "Descendente" significa DESC, ya que se desea ordenar los resultados por salario en orden
+descendente (de mayor a menor).
+
+>>> >>> Mi query es:
+... SELECT *
+... FROM empleados
+... WHERE ciudad = "Madrid" OR ciudad = "Barcelona"
+... ORDER BY salario > 30000 DESC;
+...
+... ¿Está correcta para el requisito:"Empleados de Madrid o Barcelona que ganen más de 30.000€,
+... ordenados por salario descendente"?
+  La consulta proporcionada cumple con la mayoría del requisito. Sin embargo, hay un problema en
+el ordenamiento:
+```sql
+ORDER BY salario > 30000 DESC;
+```
+Debe ser `ORDER BY salario DESC WHERE salario > 30000`, ya que el filtrado por salarios debe
+realizarse antes del ordenamiento. A continuación, aquí está la consulta correcta:
+```sql
+SELECT * FROM empleados WHERE ciudad = "Madrid" OR ciudad = "Barcelona" AND salario > 30000
+ORDER BY salario DESC;
+```
+
+SELECT * 
+FROM empleados 
+WHERE ciudad = "Madrid" OR ciudad = "Barcelona" AND salario > 30000 
+ORDER BY salario DESC;
+
+>>> >>> Requisito: "Los 10 empleados con mayor salario del departamento de IT"
+...
+... Guíame paso a paso:
+... 1. ¿Qué filtro WHERE necesito?
+... 2. ¿Cómo ordeno para obtener los de "mayor salario"?
+... 3. ¿Cómo limito a 10 resultados?
+...
+... Dame solo pistas, no el SQL completo.
+  1. El filtro necesario es por departamento (IT en este caso).
+2. Para obtener los de mayor salario, se debe ordenar por el campo "salario" en orden
+descendente.
+3. Para limitar a 10 resultados, se puede utilizar la función LIMIT.
